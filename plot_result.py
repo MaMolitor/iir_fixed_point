@@ -1,11 +1,12 @@
+#!/usr/bin/env python3
 # plots the unfiltered and filtered ECG in
 # raw integer units. The ADC had a resolution
 # 12 bits.
 import numpy as np
 import pylab as pl
 #
-unfiltered = np.loadtxt('ecg2.dat');
-filtered = np.loadtxt('ecg2_filtered.dat');
+unfiltered = np.loadtxt('unfiltered.dat');
+filtered = np.loadtxt('filtered.dat');
 #
 pl.title('Fixed point filtering demo');
 # unfiltered

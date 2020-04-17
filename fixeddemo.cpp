@@ -31,9 +31,9 @@ int main (int,char**)
 	DirectFormI biquad6(16384,-31180,16384,16384,-31228,16144,14);
 	
 	
-	FILE *finput = fopen("ecg2.dat","rt");
+	FILE *finput = fopen("unfiltered.dat","rt");
 	assert(finput != NULL);
-	FILE *foutput = fopen("ecg2_filtered.dat","wt");
+	FILE *foutput = fopen("filtered.dat","wt");
 	assert(foutput != NULL);
 	for(;;) 
 	{

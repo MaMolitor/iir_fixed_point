@@ -22,11 +22,10 @@ t = arange(nsamples) / sample_rate
 #x = cos(2*pi*50*t) + 0.2*sin(2*pi*2.5*t+0.1) + 0.2*sin(2*pi*15.3*t) + 0.1*sin(2*pi*16.7*t + 0.1) + 0.1*sin(2*pi*23.45*t+.8)
 x = cos(2*pi*50*t) + 0.2*sin(2*pi*60*t+0.1)
 x = np.round(x * scaling_factor);
-file=open("ecg2.dat","w")
+file=open("unfiltered.dat","w")
 s = 1;
 for d in x:
    i = int(d) + 5000
    file.write(str(s) + " " + str(i) + " " + str(i) + " " + str(i)  + "\n")
    s = s + 1
 file.close()
-#np.savetxt('test.dat',x );
