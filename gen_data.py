@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr 17 10:20:43 2020
+
+@author: molitor
+"""
+
+#!python
+
+from numpy import cos, sin, pi, arange
+import numpy as np
+
+#------------------------------------------------
+# Create a signal for demonstration.
+#------------------------------------------------
+
+sample_rate = 1000.0
+nsamples = 3000
+scaling_factor = 2**12
+t = arange(nsamples) / sample_rate
+#x = cos(2*pi*50*t) + 0.2*sin(2*pi*2.5*t+0.1) + 0.2*sin(2*pi*15.3*t) + 0.1*sin(2*pi*16.7*t + 0.1) + 0.1*sin(2*pi*23.45*t+.8)
+x = cos(2*pi*50*t) + 0.2*sin(2*pi*60*t+0.1)
+x = np.round(x * scaling_factor);
+file=open("ecg2.dat","w")
+s = 1;
+for d in x:
+   i = int(d) + 5000
+   file.write(str(s) + " " + str(i) + " " + str(i) + " " + str(i)  + "\n")
+   s = s + 1
+file.close()
+#np.savetxt('test.dat',x );
