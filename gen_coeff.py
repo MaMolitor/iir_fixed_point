@@ -2,30 +2,40 @@
 import numpy as np
 import scipy.signal as signal
 import pylab as pl
+import configparser
+
+config = configparser.ConfigParser()
+config.read('test_config.ini')
 
 # Calculate the coefficients for a pure fixed point
 # integer filter
 
 # sampling rate
-fs = 1000
+fs = int(config.get('frequency', 'rate'))
 
 # cutoffs
-f1 = 45
-#f1 = 100
-f2 = 55
+f1 = int(config.get('frequency', 'cutoff_1'))
+
+f2 = 0;
+
+type_of_filter = config.get('filter', 'type')
+
+wp = np.array([f1/fs*2])
+if type_of_filter=='stop' :
+        f2 = int(config.get('frequency', 'cutoff_2'))
+        wp = np.array([f1/fs*2,f2/fs*2])
+
+design_of_filter = config.get('filter', 'design')
+
 
 # scaling factor in bits
-q = 14
+q = int(config.get('bit_scaling','factor'))
+
 # scaling factor as facor...
 scaling_factor = 2**q
 
 # let's generate a sequence of 2nd order IIR filters
-#sos = signal.iirfilter(6, [f1/fs*2], btype='highpass', ftype='bessel',output='sos')
-#sos = signal.butter(6,[f1/fs*2],'highpass', output='sos')
-sos = signal.iirfilter(6,[f1/fs*2,f2/fs*2], btype='stop', ftype='butter',output='sos')
-#sos = signal.butter(6,[f1/fs*2,f2/fs*2],'stop',output='sos')
-#sos = signal.butter(6,[f1/fs*2,f2/fs*2],'stop',output='sos')
-#sos = signal.butter(6,[f1/fs*2],'low',output='sos')
+sos = signal.iirfilter(6,wp, btype=type_of_filter, ftype=design_of_filter,output='sos')
 
 sos = np.round(sos * scaling_factor)
 
