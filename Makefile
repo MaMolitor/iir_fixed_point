@@ -1,7 +1,7 @@
 all: fixeddemo
 
 
-fixeddemo: DirectFormI.h fixeddemo.cpp
+fixeddemo: DirectFormI.hpp fixeddemo.cpp
 	g++ -Ofast -o fixeddemo fixeddemo.cpp
 
 clean:

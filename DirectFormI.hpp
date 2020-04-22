@@ -12,6 +12,7 @@ fixed point arithmetic.
 License: MIT License (http://www.opensource.org/licenses/mit-license.php)
 Copyright (c) 2009 by Vinnie Falco
 Copyright (C) 2013-2017, Bernd Porr, mail@berndporr.me.uk
+Copyright (C) 2020 , Mario Molitor , mario_molitor@web.de
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -34,10 +35,8 @@ THE SOFTWARE.
 *******************************************************************************/
 
 
-
-#ifndef DIRECT_FORM_I_H
-#define DIRECT_FORM_I_H
-
+#ifndef DIRECTFORMI_HPP_
+#define DIRECTFORMI_HPP_
 class DirectFormI
 {
 public:
@@ -46,8 +45,8 @@ public:
 	// the coefficients have been scaled up by the factor
 	// 2^q which need to scaled down by this factor after every
 	// time step which is taken care of.
-	DirectFormI(const short int b0, const short int b1, const short int b2, 
-		    const short int a1, const short int a2, 
+	DirectFormI(const short int b0, const short int b1, const short int b2,
+		    const short int a1, const short int a2,
 		    const short int q = 15)
 	{
 		// coefficients are scaled by factor 2^q
@@ -63,8 +62,8 @@ public:
 	}
 
 	// convenience function which takes the a0 argument but ignores it!
-	DirectFormI(const short int b0, const short int b1, const short int b2, 
-		    const short int, const short int a1, const short int a2, 
+	DirectFormI(const short int b0, const short int b1, const short int b2,
+		    const short int, const short int a1, const short int a2,
 		    const short int q = 15)
 	{
 		// coefficients are scaled by factor 2^q
@@ -78,7 +77,26 @@ public:
 		c_a2 = a2;
 		reset();
 	}
-	
+
+	DirectFormI(const DirectFormI &my)
+	{
+	// delay line
+		m_x2 = my.m_x2; // x[n-2]
+		m_y2 = my.m_y2; // y[n-2]
+		m_x1 = my.m_x1; // x[n-1]
+		m_y1 = my.m_y1; // y[n-1]
+
+	// coefficients
+		c_b0 = my.c_b0;
+		c_b1 = my.c_b1;
+		c_b2 = my.c_b2; // FIR
+		c_a1 = my.c_a1;
+		c_a2 = my.c_a2; // IIR
+
+	// scaling factor
+		q_scaling = my.q_scaling; // 2^q_scaling
+    }
+
 	void reset ()
 	{
 		m_x1 = 0;
@@ -92,9 +110,9 @@ public:
 	{
 		// calculate the output
 		register int out_upscaled = (int)c_b0*(int)in
-			+ (int)c_b1*(int)m_x1 
+			+ (int)c_b1*(int)m_x1
 			+ (int)c_b2*(int)m_x2
-			- (int)c_a1*(int)m_y1 
+			- (int)c_a1*(int)m_y1
 			- (int)c_a2*(int)m_y2;
 
 		// scale it back from int to short int
@@ -108,20 +126,20 @@ public:
 
 		return out;
 	}
-	
+
 private:
 	// delay line
-  	short int m_x2; // x[n-2]
-  	short int m_y2; // y[n-2]
-  	short int m_x1; // x[n-1]
-  	short int m_y1; // y[n-1]
+	short int m_x2; // x[n-2]
+	short int m_y2; // y[n-2]
+	short int m_x1; // x[n-1]
+	short int m_y1; // y[n-1]
 
 	// coefficients
-  	short int c_b0,c_b1,c_b2; // FIR
-  	short int c_a1,c_a2; // IIR
+	short int c_b0,c_b1,c_b2; // FIR
+	short int c_a1,c_a2; // IIR
 
 	// scaling factor
 	short int q_scaling; // 2^q_scaling
 };
 
-#endif
+#endif /* DIRECTFORMI_HPP_ */
