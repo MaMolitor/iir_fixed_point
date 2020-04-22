@@ -11,13 +11,15 @@ Created on Fri Apr 17 10:20:43 2020
 from numpy import cos, sin, pi, arange
 import numpy as np
 import pylab as pl
+import configparser
 
-
+config = configparser.ConfigParser()
+config.read('test_config.ini')
 #------------------------------------------------
 # Create a signal for demonstration.
 #------------------------------------------------
 
-sample_rate = 1000.0
+sample_rate = int(config.get('frequency', 'rate'))
 nsamples = 3000
 scaling_factor = 2**12
 t = arange(nsamples) / sample_rate
@@ -26,6 +28,7 @@ t = arange(nsamples) / sample_rate
 x = cos(2*pi*50*t)  + sin(2*pi*200*t)
 print(scaling_factor)
 x = np.round(x * scaling_factor);
+
 file=open("unfiltered.dat","w")
 s = 1;
 for d in x:
