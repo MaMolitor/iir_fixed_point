@@ -33,7 +33,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 *******************************************************************************/
-
+#include<cstdint>
 
 #ifndef DIRECTFORMI_HPP_
 #define DIRECTFORMI_HPP_
@@ -45,9 +45,9 @@ public:
 	// the coefficients have been scaled up by the factor
 	// 2^q which need to scaled down by this factor after every
 	// time step which is taken care of.
-	DirectFormI(const short int b0, const short int b1, const short int b2,
-		    const short int a1, const short int a2,
-		    const short int q = 15)
+	DirectFormI(const int b0, const int b1, const int b2,
+			const int a1, const int a2,
+			const int q = 15)
 	{
 		// coefficients are scaled by factor 2^q
 		q_scaling = q;
@@ -62,9 +62,9 @@ public:
 	}
 
 	// convenience function which takes the a0 argument but ignores it!
-	DirectFormI(const short int b0, const short int b1, const short int b2,
-		    const short int, const short int a1, const short int a2,
-		    const short int q = 15)
+	DirectFormI(const int b0, const int b1, const int b2,
+			const int, const int a1, const int a2,
+			const int q = 15)
 	{
 		// coefficients are scaled by factor 2^q
 		q_scaling = q;
@@ -106,17 +106,17 @@ public:
 	}
 
 	// filtering operation: one sample in and one out
-	inline short int filter(const short int in)
+	inline int filter(const int in)
 	{
 		// calculate the output
-		register int out_upscaled = (int)c_b0*(int)in
-			+ (int)c_b1*(int)m_x1
-			+ (int)c_b2*(int)m_x2
-			- (int)c_a1*(int)m_y1
-			- (int)c_a2*(int)m_y2;
+		/* register */ int64_t out_upscaled = static_cast<int64_t>(c_b0) * static_cast<int64_t>(in)
+			+ static_cast<int64_t>(c_b1) * static_cast<int64_t>(m_x1)
+			+ static_cast<int64_t>(c_b2) * static_cast<int64_t>(m_x2)
+			- static_cast<int64_t>(c_a1) * static_cast<int64_t>(m_y1)
+			- static_cast<int64_t>(c_a2) * static_cast<int64_t>(m_y2);
 
-		// scale it back from int to short int
-		short int out = out_upscaled >> q_scaling;
+		// scale it back from int to int
+		int out = static_cast<int>(out_upscaled >> q_scaling);
 
 		// update the delay lines
 		m_x2 = m_x1;
@@ -129,17 +129,17 @@ public:
 
 private:
 	// delay line
-	short int m_x2; // x[n-2]
-	short int m_y2; // y[n-2]
-	short int m_x1; // x[n-1]
-	short int m_y1; // y[n-1]
+	int m_x2; // x[n-2]
+	int m_y2; // y[n-2]
+	int m_x1; // x[n-1]
+	int m_y1; // y[n-1]
 
 	// coefficients
-	short int c_b0,c_b1,c_b2; // FIR
-	short int c_a1,c_a2; // IIR
+	int c_b0,c_b1,c_b2; // FIR
+	int c_a1,c_a2; // IIR
 
 	// scaling factor
-	short int q_scaling; // 2^q_scaling
+	int q_scaling; // 2^q_scaling
 };
 
 #endif /* DIRECTFORMI_HPP_ */

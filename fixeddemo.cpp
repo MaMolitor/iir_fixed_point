@@ -44,7 +44,7 @@ int main (int,char**)
 		while ( std::getline (coeff_file,line) )
 		{
 				char delim;
-				short int b0 = 0,b1 = 0,b2 =0 ,a0 = 0,a1 = 1, a2 = 0, q = 0;
+				int b0 = 0,b1 = 0,b2 =0 ,a0 = 0,a1 = 1, a2 = 0, q = 0;
 				std::istringstream iss(line.c_str());
 				std::string temp;
 				iss >> b0 >> delim >> b1 >> delim >> b2 >> delim >> a0 >> delim >> a1 >> delim >> a2 >> delim >> q;
@@ -70,9 +70,10 @@ int main (int,char**)
 	for(;;)
 	{
 		// the data file has 3 channels and time
-		short x1,x2,x3,y;
+		int x1,x2,x3,y;
+
 		int t;
-		if (fscanf(finput,"%d %hd %hd %hd\n",&t,&x1,&x2,&x3)<1) break;
+		if (fscanf(finput,"%d %d %d %d\n",&t,&x1,&x2,&x3)<1) break;
 		y = x2;
 		std::list<DirectFormI>::iterator it;
 
@@ -83,7 +84,7 @@ int main (int,char**)
 			y = it->filter(y);
 		}
 
-		fprintf(foutput,"%d %hd\n",t,y);
+		fprintf(foutput,"%d %d\n",t,y);
 	}
 	fclose(finput);
 	fclose(foutput);
