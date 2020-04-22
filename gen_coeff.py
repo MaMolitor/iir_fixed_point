@@ -21,7 +21,7 @@ f2 = 0;
 type_of_filter = config.get('filter', 'type')
 
 wp = np.array([f1/fs*2])
-if type_of_filter=='stop' :
+if type_of_filter=='stop' or type_of_filter=='bandstop' or type_of_filter=='bandpass':
         f2 = int(config.get('frequency', 'cutoff_2'))
         wp = np.array([f1/fs*2,f2/fs*2])
 
