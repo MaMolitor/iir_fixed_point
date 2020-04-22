@@ -11,7 +11,7 @@ filtered = np.loadtxt('filtered.dat');
 pl.title('Fixed point filtering demo');
 # unfiltered
 pl.subplot(211);
-pl.plot(unfiltered[:,2]);
+pl.plot(unfiltered[:,1]);
 pl.xlabel('samples');
 pl.ylabel('unfiltered/raw ADC units');
 # filtered

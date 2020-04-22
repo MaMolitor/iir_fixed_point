@@ -69,12 +69,11 @@ int main (int,char**)
 
 	for(;;)
 	{
-		// the data file has 3 channels and time
-		int x1,x2,x3,y;
+		// the data file has 1 channel and time
+		int x1,y,t;
 
-		int t;
-		if (fscanf(finput,"%d %d %d %d\n",&t,&x1,&x2,&x3)<1) break;
-		y = x2;
+		if (fscanf(finput,"%d %d\n",&t,&x1)<1) break;
+		y = x1;
 		std::list<DirectFormI>::iterator it;
 
 		// Make iterate point to begining and incerement it one by one till it reaches the end of list.

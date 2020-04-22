@@ -30,7 +30,7 @@ file=open("unfiltered.dat","w")
 s = 1;
 for d in x:
    i = int(d)
-   file.write(str(s) + " " + str(i) + " " + str(i) + " " + str(i)  + "\n")
+   file.write(str(s) + " " + str(i) + "\n")
    s = s + 1
 file.close()
 
