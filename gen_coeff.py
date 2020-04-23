@@ -38,7 +38,7 @@ sos = signal.iirfilter(order,wp, btype=type_of_filter, ftype=design_of_filter,ou
 bit_width = int ( np.abs(np.floor(np.log2 ( sos[0,0] ))))
 # scaling factor as facor...
 if q > bit_width :
-    bit_with = q
+    bit_width = q
     print("The bit width parameter in the config file is greater as the calculate and it will be taken.")
 elif q < bit_width :
     print("The calculate bit width is greater than from the config file.  .!!!")
@@ -52,7 +52,6 @@ print("Bit-Width:",  bit_width )
 # scaling factor as facor...
 scaling_factor = 2** bit_width
 
-#print ( np.log2 ( sos[0,0] ))
 print("\n","coefficients without scaling : ")
 for biquad in sos:
     for coeff in biquad:
@@ -74,6 +73,7 @@ for biquad in sos:
         print(int(coeff),",",sep="",end="", file=file_coeff)
     print(bit_width, file=file_coeff)
 file_coeff.close()
+
 
 # plot the frequency response
 b,a = signal.sos2tf(sos)
