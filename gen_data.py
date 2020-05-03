@@ -20,14 +20,17 @@ config.read('test_config.ini')
 #------------------------------------------------
 
 sample_rate = int(config.get('frequency', 'rate'))
-nsamples = 3000
+nsamples = sample_rate * 10
 scaling_factor = 2**12
 t = arange(nsamples) / sample_rate
 #x = cos(2*pi*50*t) + 0.2*sin(2*pi*2.5*t+0.1) + 0.2*sin(2*pi*15.3*t) + 0.1*sin(2*pi*16.7*t + 0.1) + 0.1*sin(2*pi*23.45*t+.8)
 #x = cos(2*pi*50*t)  + 0.2*sin(2*pi*60*t+0.1)
-x = cos(2*pi*50*t)  + sin(2*pi*200*t)
+#x = cos(2*pi*50*t)  + sin(2*pi*200*t)
+x = (cos(2*pi*50*t) + 0.2*(sin(2*pi*1*t)))
+# + sin(2*pi*60*t)
 print(scaling_factor)
-x = np.round(x * scaling_factor);
+x = (x * scaling_factor);
+x = np.floor(x)
 
 file=open("unfiltered.dat","w")
 s = 1;

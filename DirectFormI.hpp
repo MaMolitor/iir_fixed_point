@@ -45,8 +45,8 @@ public:
 	// the coefficients have been scaled up by the factor
 	// 2^q which need to scaled down by this factor after every
 	// time step which is taken care of.
-	DirectFormI(const int b0, const int b1, const int b2,
-			const int a1, const int a2,
+    DirectFormI(const int64_t b0, const int64_t b1, const int64_t b2,
+            const int64_t a1, const int64_t a2,
 			const int q = 15)
 	{
 		// coefficients are scaled by factor 2^q
@@ -62,8 +62,8 @@ public:
 	}
 
 	// convenience function which takes the a0 argument but ignores it!
-	DirectFormI(const int b0, const int b1, const int b2,
-			const int, const int a1, const int a2,
+    DirectFormI(const int64_t b0, const int64_t b1, const int64_t b2,
+            const int64_t, const int64_t a1, const int64_t a2,
 			const int q = 15)
 	{
 		// coefficients are scaled by factor 2^q
@@ -106,17 +106,17 @@ public:
 	}
 
 	// filtering operation: one sample in and one out
-	inline int filter(const int in)
+    inline int64_t filter(const int64_t in)
 	{
 		// calculate the output
-		/* register */ int64_t out_upscaled = static_cast<int64_t>(c_b0) * static_cast<int64_t>(in)
-			+ static_cast<int64_t>(c_b1) * static_cast<int64_t>(m_x1)
-			+ static_cast<int64_t>(c_b2) * static_cast<int64_t>(m_x2)
-			- static_cast<int64_t>(c_a1) * static_cast<int64_t>(m_y1)
-			- static_cast<int64_t>(c_a2) * static_cast<int64_t>(m_y2);
+        /* register */ __int128 out_upscaled = static_cast<__int128>(c_b0) * static_cast<__int128>(in)
+            + static_cast<__int128>(c_b1) * static_cast<__int128>(m_x1)
+            + static_cast<__int128>(c_b2) * static_cast<__int128>(m_x2)
+            - static_cast<__int128>(c_a1) * static_cast<__int128>(m_y1)
+            - static_cast<__int128>(c_a2) * static_cast<__int128>(m_y2);
 
 		// scale it back from int to int
-		int out = static_cast<int>(out_upscaled >> q_scaling);
+        int64_t out = static_cast<int64_t>(out_upscaled >> q_scaling);
 
 		// update the delay lines
 		m_x2 = m_x1;
@@ -129,14 +129,14 @@ public:
 
 private:
 	// delay line
-	int m_x2; // x[n-2]
-	int m_y2; // y[n-2]
-	int m_x1; // x[n-1]
-	int m_y1; // y[n-1]
+    int64_t m_x2; // x[n-2]
+    int64_t m_y2; // y[n-2]
+    int64_t m_x1; // x[n-1]
+    int64_t m_y1; // y[n-1]
 
 	// coefficients
-	int c_b0,c_b1,c_b2; // FIR
-	int c_a1,c_a2; // IIR
+    int64_t c_b0,c_b1,c_b2; // FIR
+    int64_t c_a1,c_a2; // IIR
 
 	// scaling factor
 	int q_scaling; // 2^q_scaling
